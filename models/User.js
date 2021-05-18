@@ -3,20 +3,18 @@ const mongoose = require("mongoose"); //importing mongoose
 const UserSchema = new mongoose.Schema({//making a new schema from mongoose.Schema constructor
     name: {
         type: String,
-        required: [true, "A product must have a title"],
+        required: true
     },
     email: {
         type: String,
-        required: [true, "Email is required."]
+        required: true
     },
     password: {
         type: String,
-        required: [true, "Password must be present"],
-        min: [1, "Must have a price over a dollar."]
+        required: true
     },
     avatar: {
         type: String,
-        required: true
     },
     date: {
         type: Date,
