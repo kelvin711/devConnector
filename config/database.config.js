@@ -1,9 +1,9 @@
 // module.exports = {
 //     mongoURI: 'mongodb+srv://Kelvin:password321@devconnector.dgyil.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 // }
-
+const db = require('./keys').mongoURI;
 const mongoose = require("mongoose"),//importing mongoose 
-    uri = 'mongodb+srv://Kelvin:password321@devconnector.dgyil.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'; //setting our database name
+    uri = db; //setting our database name
 
 mongoose.connect( uri, {
 	useNewUrlParser: true,

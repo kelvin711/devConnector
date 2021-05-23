@@ -1,4 +1,5 @@
 const UserController = require('../controllers/user.controllers')
+const passport = require('passport');
 
 module.exports = app => {//making a function and bringing in app
     //test route
@@ -9,6 +10,8 @@ module.exports = app => {//making a function and bringing in app
     app.post('/api/users/register', UserController.register);
     //login route
     app.post('/api/users/login', UserController.login)
+    //return current user
+    app.get('/api/users/current', passport.authenticate('jwt', { session: false }), UserController.current)
 }
 
 

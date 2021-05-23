@@ -1,8 +1,14 @@
 const express = require("express"),
+    passport = require('passport'),
     app = express(),
     port = 5000,
     cors = require("cors"),
     server = app.listen(port, () => console.log(`all systems firing on port ${port}!`));
+
+//passport middleware
+app.use(passport.initialize());
+//passport config
+require('./config/passport')(passport);// passong in passport to config passport
 
 app.use(cors());//will allow the backend to send and recieve information
 app.use(express.json());//parse json data
