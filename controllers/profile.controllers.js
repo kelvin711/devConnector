@@ -10,7 +10,7 @@ module.exports = {
     test: (req, res) => { //test route
         res.json({ msg: "Profile works"})
     },
-    getProfile: (req, res) => {//private route to get user
+    getProfile: (req, res) => {//private route to get a profile
         const errors = {}
         Profile.findOne({ user: req.user.id })
             .then( profile => {
@@ -21,5 +21,16 @@ module.exports = {
                 res.json(profile)
             })
             .catch( err => res.status(404).json(err))
-    }
-}
+    },
+    createProfile: (req, res) => {//private route to create a profile
+        const errors = {}
+        Profile.findOne({ user: req.user.id })
+            .then( profile => {
+                if(!profile) {
+                    errors.noProfile = 'There is no profile for this user'
+                    return res.status(404).json(errors)
+                }
+                res.json(profile)
+            })
+            .catch( err => res.status(404).json(err))
+    },

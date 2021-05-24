@@ -6,8 +6,8 @@ module.exports = app => {//making a function and bringing in app
     app.get('/api/profiles/test', ProfileController.test)
     //get current usere profile
     app.get('/api/profile', passport.authenticate('jwt', { session: false }), ProfileController.getProfile);
-    // //register route
-    // app.post('/api/users/register', UserController.register);
+    //create profile
+    app.post('/api/profile/create', ProfileController.createProfile);
     // //login route
     // app.post('/api/users/login', UserController.login)
     
