@@ -2,8 +2,8 @@ const Profile = require('../models/profile.model');//getting our Profile model
 const User = require('../models/user.model');//getting our user model
 const express = require('express')
 const mongoose = require('mongoose')
-
-
+//lolad validation
+const validateProfileInput = require('../validation/profile')
 
 
 module.exports = {
@@ -13,6 +13,7 @@ module.exports = {
     getProfile: (req, res) => {//private route to get a profile
         const errors = {}
         Profile.findOne({ user: req.user.id })
+            .populate('user', ['name', 'avatar'])
             .then( profile => {
                 if(!profile) {
                     errors.noProfile = 'There is no profile for this user'
@@ -23,6 +24,11 @@ module.exports = {
             .catch( err => res.status(404).json(err))
     },
     createProfile: (req, res) => {//private route to create a profile and edit
+        const { errors, isValid } = validateProfileInput(req.body)
+        //check validation
+        if(!isValid) {
+            return res.status(400).json(errors)
+        }
         //get fields
         const profileFields = {}
         profileFields.user = req.user.id
