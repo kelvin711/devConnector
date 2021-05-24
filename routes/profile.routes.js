@@ -7,7 +7,7 @@ module.exports = app => {//making a function and bringing in app
     //get current usere profile
     app.get('/api/profile', passport.authenticate('jwt', { session: false }), ProfileController.getProfile);
     //create profile
-    app.post('/api/profile/create', ProfileController.createProfile);
+    app.post('/api/profile', passport.authenticate('jwt', { session: false }), ProfileController.createProfile);
     // //login route
     // app.post('/api/users/login', UserController.login)
     
