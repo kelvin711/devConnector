@@ -4,12 +4,19 @@ const express = require('express')
 const mongoose = require('mongoose')
 //lolad validation
 const validateProfileInput = require('../validation/profile')
+const validateExperienceInput = require('../validation/experience')
+const validateEducationInput = require('../validation/education')
 
 
 module.exports = {
     test: (req, res) => { //test route
         res.json({ msg: "Profile works"})
     },
+
+    // experience: (req, res) => { //test route
+    //     res.json({ msg: "Profile works"})
+    // },
+
     getProfile: (req, res) => {//private route to get a profile
         const errors = {}
         Profile.findOne({ user: req.user.id })
@@ -23,6 +30,35 @@ module.exports = {
             })
             .catch( err => res.status(404).json(err))
     },
+
+    findByHandle: (req, res) => {//public route to get any handle
+        const errors = {}
+        Profile.findOne({ handle: req.params.handle })
+            .populate('user', ['name', 'avatar'])
+            .then( profile => {
+            if(!profile) {
+                errors.noProfile = 'There is no profile for this user'
+                res.status(404).json(errors)
+            }
+            res.json(profile)
+            })
+            .catch( err => res.status(404).json(err))
+    },
+
+    findByUser: (req, res) => {//public route to get any handle
+        const errors = {}
+        Profile.findOne({ user: req.params.userId })
+            .populate('user', ['name', 'avatar'])
+            .then( profile => {
+            if(!profile) {
+                errors.noProfile = 'There is no profile for this user'
+                res.status(404).json(errors)
+            }
+            res.json(profile)
+            })
+            .catch( err => res.status(404).json({ profile: 'There is no profile for this user' }))
+    },
+
     createProfile: (req, res) => {//private route to create a profile and edit
         const { errors, isValid } = validateProfileInput(req.body)
         //check validation
@@ -76,5 +112,106 @@ module.exports = {
                         })
                 }
             })
+    },
+
+    getAllProfiles: (req, res) => {//private route to get a profile
+        const errors = {}
+        Profile.find()
+        .populate('user', ['name', 'avatar'])
+        .then( profiles => {
+            if(!profiles) {
+                errors.noProfile = 'There are no profiles'
+                return res.status(404).json(errors)
+            }
+            res.json(profiles)
+        })
+        .catch(err => res.status(404).json({profiles: 'There are no profiles'}))
+    },
+
+    addExperience: (req, res) => {
+        
+        const { errors, isValid } = validateExperienceInput(req.body)
+        //check validation
+        if(!isValid) {
+            return res.status(400).json(errors)
+        }
+        Profile.findOne({ user: req.user.id })
+        .then( profile => {
+            const newExp = {
+                title: req.body.title,
+                company: req.body.company,
+                location: req.body.location,
+                from: req.body.from,
+                to: req.body.to,
+                current: req.body.current,
+                description: req.body.description,
+            }
+            //add to exp array
+            profile.experience.unshift(newExp)
+            profile.save().then(profile => res.json(profile))
+
+        })
+    },
+
+    deleteExperience: (req, res) => {
+        Profile.findOne({user: req.user.id})
+        .then(profile => {
+            //get remove index
+            const removeIndex = profile.experience.map( item => item.id)
+            .indexOf(req.params.expID);
+            //splice out of array
+            profile.experience.splice(removeIndex, 1)
+            //save
+            profile.save().then(profile => res.json(profile))
+        })
+        .catch( err => res.status(404).json(err))
+    },
+    
+    addEducation: (req, res) => {
+        
+        const { errors, isValid } = validateEducationInput(req.body)
+        //check validation
+        if(!isValid) {
+            return res.status(400).json(errors)
+        }
+        Profile.findOne({ user: req.user.id })
+        .then( profile => {
+            const newEducation = {
+                school: req.body.school,
+                degree: req.body.degree,
+                fieldOfStudy: req.body.fieldOfStudy,
+                from: req.body.from,
+                to: req.body.to,
+                description: req.body.description,
+            }
+            //add to exp array
+            profile.education.unshift(newEducation)
+            profile.save().then(profile => res.json(profile))
+
+        })
+    },
+
+    deleteEducation: (req, res) => {
+        Profile.findOne({user: req.user.id})
+        .then(profile => {
+            //get remove index
+            const removeIndex = profile.education.map( item => item.id)
+            .indexOf(req.params.educationID);
+            //splice out of array
+            profile.education.splice(removeIndex, 1)
+            //save
+            profile.save().then(profile => res.json(profile))
+        })
+        .catch( err => res.status(404).json(err))
+    },
+
+    
+    deleteProfileAndUser: (req, res) => {
+        Profile.findOneAndRemove({user: req.user.id})
+            .then( () => {
+                User.findOneAndRemove({ _id: req.user.id})
+                    .then( () => res.json({success: true}))
+            })
+        .catch( err => res.status(404).json(err))
     },
 }
