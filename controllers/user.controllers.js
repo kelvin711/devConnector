@@ -110,25 +110,3 @@ module.exports = {
     
     
 }
-
-
-// show: (req, res) => {
-//     Product.findOne({ _id: req.params.id})
-//         .then( oneProduct => res.json({ showProduct : oneProduct }))
-//         .catch( err => res.json(err.errors));
-// },
-// create :(req,res) => { //create is the restful pattern
-//     Product.create(req.body) //mongoose built in queries
-//         .then( newlyCreatedProduct => res.json({ createProduct : newlyCreatedProduct }))
-//         .catch( err => res.json(err.errors));
-// },
-// update: (req, res) => {
-//     Product.findOneAndUpdate({ _id: req.params.id }, req.body, {new : true})
-//         .then( updatedProduct => res.json({ updateProduct: updatedProduct }))
-//         .catch( err => res.json(err.errors));
-// }, 
-// destroy : (req, res) => {
-//     Product.deleteOne({ _id: req.params.id })
-//     .then( ProductToDelete => res.json({ ProductToDelete : ProductToDelete }))
-//     .catch(err => res.json(err.errors));
-// }
