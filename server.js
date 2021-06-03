@@ -17,6 +17,7 @@ app.use(express.urlencoded({extended:true}));//parse string data
 require("./config/database.config");//getting from the config file
 require("./routes/user.routes")(app);//injecting the app to user routes
 require("./routes/profile.routes")(app);//injecting the app to profile routes
+require("./routes/posts.routes")(app);//injecting the app to posts routes
 //injecting the route into the server
 
 

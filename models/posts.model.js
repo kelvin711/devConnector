@@ -2,7 +2,7 @@ const mongoose = require("mongoose"); //importing mongoose
 
 const PostSchema = new mongoose.Schema({//making a new schema from mongoose.Schema constructor
     user: {
-        type: Schema.Types.ObjectID,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'users'
     },
     text: {
@@ -18,7 +18,7 @@ const PostSchema = new mongoose.Schema({//making a new schema from mongoose.Sche
     likes: [
         {
             user: {
-                type: Schema.Types.ObjectID,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'users'
             }
         }
@@ -26,7 +26,7 @@ const PostSchema = new mongoose.Schema({//making a new schema from mongoose.Sche
     comments: [
         {
             user: {
-                type: Schema.Types.ObjectID,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'users'
             },
             text: {
