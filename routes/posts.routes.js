@@ -11,18 +11,14 @@ module.exports = app => {//making a function and bringing in app
     app.get('/api/posts/all', PostsController.getAllPosts);
     // //fetch a single post
     app.get('/api/post/:postID', PostsController.getPost);
-    // //get profile by user id
-    // app.get('/api/profile/user/:userId', ProfileController.findByUser)
-    // //create profile
-    // app.post('/api/profile', passport.authenticate('jwt', { session: false }), ProfileController.createProfile);
-    // //add an experience
-    // app.post('/api/profile/experience', passport.authenticate('jwt', { session: false }), ProfileController.addExperience)
-    // //add education
-    // app.post('/api/profile/education', passport.authenticate('jwt', { session: false }), ProfileController.addEducation)
-    // //delete experience
-    // app.delete('/api/profile/experience/:expID', passport.authenticate('jwt', { session: false }), ProfileController.deleteExperience)
-    // //delete education
-    // app.delete('/api/profile/education/:educationID', passport.authenticate('jwt', { session: false }), ProfileController.deleteEducation)
-    // //delete profile and user
-    // app.delete('/api/profile/delete', passport.authenticate('jwt', { session: false }), ProfileController.deleteProfileAndUser)
+    // //delete post
+    app.delete('/api/post/:postID/delete', passport.authenticate('jwt', { session: false }), PostsController.deletePost)
+    //like a post
+    app.post('/api/post/:postID/like', passport.authenticate('jwt', { session: false }), PostsController.likePost);
+    //unlike a post
+    app.post('/api/post/:postID/unlike', passport.authenticate('jwt', { session: false }), PostsController.unlikePost);
+    //add comment
+    app.post('/api/post/comment/:postID', passport.authenticate('jwt', { session: false }), PostsController.addComment)
+    //delete comment
+    app.delete('/api/post/comment/:postID/:commentID/delete', passport.authenticate('jwt', { session: false }), PostsController.deleteComment)
 }
